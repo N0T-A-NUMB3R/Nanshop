@@ -7,4 +7,6 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'nanshop';
+  saluti = 'Benvenuti nel sito Nanshop'
+  titolo2 = 'Seleziona gli articoli da acquistare'
 }
