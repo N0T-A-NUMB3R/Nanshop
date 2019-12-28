@@ -11,6 +11,7 @@ export class LoginComponent implements OnInit {
   userId = "";
   password = "";
   autenticato = false;
+  showMsgLogin  = false;
 
   errorMsg = "Spiacente, la userId o la password sono errati";
   
@@ -21,6 +22,7 @@ export class LoginComponent implements OnInit {
   }
 
   gestAut() {
+    
     if (this.userId === "fabio" && this.password === "123") {
       this.autenticato = true;
       this.route.navigate(["welcome",this.userId]);
@@ -28,6 +30,7 @@ export class LoginComponent implements OnInit {
     }
     else {
       this.autenticato = false;
+      this.showMsgLogin = true;
      
     }
   }

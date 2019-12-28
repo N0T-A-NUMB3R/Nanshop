@@ -1,6 +1,6 @@
 <app-jumbotron [Titolo]="'Autentificazione'" [SottoTitolo]="' Inserisci la UserId e la Password'"></app-jumbotron>
 
-<div *ngIf='!autenticato'> {{errorMsg}} </div>
+<div *ngIf='!autenticato && showMsgLogin'> {{errorMsg}} </div>
 
 <div>
     <label for="userId">User id:</label>

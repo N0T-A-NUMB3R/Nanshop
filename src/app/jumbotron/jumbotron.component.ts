@@ -9,6 +9,8 @@ export class JumbotronComponent implements OnInit {
 
   @Input() Titolo: string
   @Input() SottoTitolo: string
+  @Input() Show: true
+  
 
   constructor() { }
 
