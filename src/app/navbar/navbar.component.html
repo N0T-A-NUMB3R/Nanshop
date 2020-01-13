@@ -5,42 +5,42 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
 
-        <a class="navbar-brand" href="/index">NanShop</a>
+        <a class="navbar-brand" routerLink="/index">NanShop</a>
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
             <li class="nav-item active">
-                <a class="nav-link" href="/index">
+                <a class="nav-link" routerLink="/index">
                     <span class="oi oi-home" title="home" aria-hidden="true"></span>
                     Home
                     <span class="sr-only">(current)</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/seekart">
+                <a class="nav-link" routerLink="/articoli">
                     <span class="oi oi-box" title="prodotti" aria-hidden="true"></span>
                     Prodotti
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/promozioni">
+                <a class="nav-link" routerLink="/promozioni">
                     <span class="oi oi-bullhorn" title="promozioni" aria-hidden="true"></span>
                     Promozioni
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/fidelity">
+                <a class="nav-link" routerLink="/fidelity">
                     <span class="oi oi-credit-card" title="punti" aria-hidden="true"></span>
                     Fidelity
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/clienti">
+                <a class="nav-link" routerLink="/clienti">
                     <span class="oi oi-people" title="clienti" aria-hidden="true"></span>
                     <span class="badge"></span>
                     Clienti
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/ordini">
+                <a class="nav-link" routerLink="/ordini">
                     <span class="oi oi-cart" title="ordini" aria-hidden="true"></span>
                     <span class="badge"></span>
                     Ordini
@@ -70,8 +70,10 @@
                     <input type="hidden" name="logout" value="${User}">
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                 </form>
-                <a class="dropdown-item" href="" onclick="$('#myHiddenFormId').submit(); return false;"
-                    title="Logout">Logout</a>
+                <a class="dropdown-item" *ngIf = "BasicAuth.isLogged()" href="" onclick="$('#myHiddenFormId').submit(); return false;"
+                    title="Logout">Logout {{BasicAuth.loggedUser()}}</a>
+                 <a class="dropdown-item disabled" *ngIf = "!BasicAuth.isLogged()"href="" onclick="$('#myHiddenFormId').submit(); return false;"
+                    title="Logout">Logout </a>   
             </div>
         </div>
     </div>
