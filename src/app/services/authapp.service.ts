@@ -7,20 +7,23 @@ export class AuthappService {
 
   constructor() { }
 
-  autentica(UserId, Password){
-    if (UserId === "fabio" && Password === "123") 
+  autentica(UserId, Password) {
+
+    if (UserId === 'Nicola' && Password === '123') 
     {
       sessionStorage.setItem("Utente", UserId);
       return true;
     }
-    else {
+    else 
+    {
       return false;
     }
   }
 
-  loggedUser()
+  loggedUser() 
   {
     let utente = sessionStorage.getItem("Utente");
+
     return (sessionStorage.getItem("Utente") != null) ? utente : "";
   }
 
@@ -29,4 +32,9 @@ export class AuthappService {
     return (sessionStorage.getItem("Utente") != null) ? true : false;
   }
 
+  clearAll()
+  {
+    sessionStorage.removeItem("Utente");
+  }
+  
 }
