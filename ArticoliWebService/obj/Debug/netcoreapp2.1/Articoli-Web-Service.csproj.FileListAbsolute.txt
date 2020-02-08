@@ -1,0 +1,14 @@
+C:\Progetti\nanshop\ArticoliWebService\bin\Debug\netcoreapp2.1\Articoli-Web-Service.deps.json
+C:\Progetti\nanshop\ArticoliWebService\bin\Debug\netcoreapp2.1\Articoli-Web-Service.runtimeconfig.json
+C:\Progetti\nanshop\ArticoliWebService\bin\Debug\netcoreapp2.1\Articoli-Web-Service.runtimeconfig.dev.json
+c:\Progetti\nanshop\ArticoliWebService\bin\Debug\netcoreapp2.1\Articoli-Web-Service.dll
+c:\Progetti\nanshop\ArticoliWebService\bin\Debug\netcoreapp2.1\Articoli-Web-Service.pdb
+c:\Progetti\nanshop\ArticoliWebService\obj\Debug\netcoreapp2.1\Articoli-Web-Service.csprojAssemblyReference.cache
+c:\Progetti\nanshop\ArticoliWebService\obj\Debug\netcoreapp2.1\Articoli-Web-Service.csproj.CoreCompileInputs.cache
+c:\Progetti\nanshop\ArticoliWebService\obj\Debug\netcoreapp2.1\Articoli-Web-Service.RazorAssemblyInfo.cache
+c:\Progetti\nanshop\ArticoliWebService\obj\Debug\netcoreapp2.1\Articoli-Web-Service.RazorAssemblyInfo.cs
+c:\Progetti\nanshop\ArticoliWebService\obj\Debug\netcoreapp2.1\Articoli-Web-Service.AssemblyInfoInputs.cache
+c:\Progetti\nanshop\ArticoliWebService\obj\Debug\netcoreapp2.1\Articoli-Web-Service.AssemblyInfo.cs
+c:\Progetti\nanshop\ArticoliWebService\obj\Debug\netcoreapp2.1\Articoli-Web-Service.RazorTargetAssemblyInfo.cache
+c:\Progetti\nanshop\ArticoliWebService\obj\Debug\netcoreapp2.1\Articoli-Web-Service.dll
+c:\Progetti\nanshop\ArticoliWebService\obj\Debug\netcoreapp2.1\Articoli-Web-Service.pdb
