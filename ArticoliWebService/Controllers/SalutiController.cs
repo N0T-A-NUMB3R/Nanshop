@@ -11,5 +11,9 @@ namespace ArticoliWebService.Controllers
         {
             return "Saluti";
         }
+
+        [HttpGet("{nome}")]
+        public string getSaluti2(string nome) =>  $"Saluti, {nome} sono il primo ws";
     }
+
 }
