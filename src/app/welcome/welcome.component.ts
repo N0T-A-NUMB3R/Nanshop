@@ -12,7 +12,7 @@ export class WelcomeComponent implements OnInit {
  // messaggio = "Saluti sono il componente welcome";
   saluti = 'Benvenuti nel sito Nanshop'
   titolo2 = 'Seleziona gli articoli da acquistare'
-
+  messaggio = "";
   utente = "";
 
   constructor(private route:ActivatedRoute, public salutiSrv: SalutiDataService) { }
@@ -22,7 +22,20 @@ export class WelcomeComponent implements OnInit {
   }
 
   getSaluti(){
-    this.salutiSrv.getSaluti();
+    
+    this.salutiSrv.getSaluti(this.utente).subscribe(
+      res => this.handleResponse(res),
+      err => this.handleError(err)
+      
+      );
+
+  }
+  handleResponse(response: Object){
+    this.messaggio = response.toString();
   }
 
+  handleError(error){
+    this.messaggio = error.error.messaggio;
+    
+  }
 }

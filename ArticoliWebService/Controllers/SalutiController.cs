@@ -1,3 +1,4 @@
+using System;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ArticoliWebService.Controllers
@@ -13,7 +14,26 @@ namespace ArticoliWebService.Controllers
         }
 
         [HttpGet("{nome}")]
-        public string getSaluti2(string nome) =>  $"Saluti, {nome} sono il primo ws";
+        public string getSaluti2(string nome)
+        {
+            try
+            {
+                if(nome == "Marco")
+                {
+                    throw new Exception("\"Errore: l'utente Marco è disabilitato\"");
+                }
+                else
+                {
+                    return string.Format("\"Saluti, {0} sono il tuo web service\"", nome);
+                }
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+           
+      
     }
 
 }

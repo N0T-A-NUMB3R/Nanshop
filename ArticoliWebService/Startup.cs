@@ -39,6 +39,13 @@ namespace Articoli_Web_Service
             {
                 app.UseHsts();
             }
+            // abilitare tutto va bene solo in sviluppo...
+            app.UseCors( x => x
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowAnyOrigin()
+                .AllowCredentials()
+            );
 
             app.UseHttpsRedirection();
             app.UseMvc();
