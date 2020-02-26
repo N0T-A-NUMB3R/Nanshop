@@ -1683,18 +1683,8 @@
           "lib/netstandard2.0/Microsoft.EntityFrameworkCore.Relational.dll": {}
         }
       },
-      "Microsoft.EntityFrameworkCore.SqlServer/2.1.1": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.EntityFrameworkCore.Relational": "2.1.1",
-          "System.Data.SqlClient": "4.5.1"
-        },
-        "compile": {
-          "lib/netstandard2.0/Microsoft.EntityFrameworkCore.SqlServer.dll": {}
-        },
-        "runtime": {
-          "lib/netstandard2.0/Microsoft.EntityFrameworkCore.SqlServer.dll": {}
-        }
+      "Microsoft.EntityFrameworkCore.SqlServer/3.0.0": {
+        "type": "package"
       },
       "Microsoft.EntityFrameworkCore.Tools/2.1.1": {
         "type": "package",
@@ -5827,16 +5817,16 @@
         "microsoft.entityframeworkcore.relational.nuspec"
       ]
     },
-    "Microsoft.EntityFrameworkCore.SqlServer/2.1.1": {
-      "sha512": "qDVFk/LyLK8K7U6/PjM/jbXhrXXnJj7mDUgmlpcBbOk+XCXg+B9mab4hU1pmPo6KU5VOizarSBfJ8JtnX1k6Mg==",
+    "Microsoft.EntityFrameworkCore.SqlServer/3.0.0": {
+      "sha512": "Qe1PzL0fVfEildvCQjWx0gXDFfD5e5LT9/Cwg0N86/6eX44FhUowdfI2FMElVdHjU80l67KhDfVmBYCEiPJ/Pw==",
       "type": "package",
-      "path": "microsoft.entityframeworkcore.sqlserver/2.1.1",
+      "path": "microsoft.entityframeworkcore.sqlserver/3.0.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "lib/netstandard2.0/Microsoft.EntityFrameworkCore.SqlServer.dll",
-        "lib/netstandard2.0/Microsoft.EntityFrameworkCore.SqlServer.xml",
-        "microsoft.entityframeworkcore.sqlserver.2.1.1.nupkg.sha512",
+        "lib/netstandard2.1/Microsoft.EntityFrameworkCore.SqlServer.dll",
+        "lib/netstandard2.1/Microsoft.EntityFrameworkCore.SqlServer.xml",
+        "microsoft.entityframeworkcore.sqlserver.3.0.0.nupkg.sha512",
         "microsoft.entityframeworkcore.sqlserver.nuspec"
       ]
     },
@@ -11823,6 +11813,7 @@
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v2.1": [
       "Microsoft.AspNetCore.App >= 2.1.1",
+      "Microsoft.EntityFrameworkCore.SqlServer >= 3.0.0",
       "Microsoft.NETCore.App >= 2.1.0"
     ]
   },
@@ -11833,11 +11824,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Progetti\\nanshop\\ArticoliWebService\\Articoli-Web-Service.csproj",
+      "projectUniqueName": "c:\\Progetti\\nanshop\\ArticoliWebService\\Articoli-Web-Service.csproj",
       "projectName": "Articoli-Web-Service",
-      "projectPath": "C:\\Progetti\\nanshop\\ArticoliWebService\\Articoli-Web-Service.csproj",
+      "projectPath": "c:\\Progetti\\nanshop\\ArticoliWebService\\Articoli-Web-Service.csproj",
       "packagesPath": "C:\\Users\\fabion\\.nuget\\packages\\",
-      "outputPath": "C:\\Progetti\\nanshop\\ArticoliWebService\\obj\\",
+      "outputPath": "c:\\Progetti\\nanshop\\ArticoliWebService\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -11874,6 +11865,10 @@
             "version": "[2.1.1, )",
             "autoReferenced": true
           },
+          "Microsoft.EntityFrameworkCore.SqlServer": {
+            "target": "Package",
+            "version": "[3.0.0, )"
+          },
           "Microsoft.NETCore.App": {
             "suppressParent": "All",
             "target": "Package",
@@ -11894,5 +11889,26 @@
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.101\\RuntimeIdentifierGraph.json"
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "NU1608",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Detected package version outside of dependency constraint: Microsoft.AspNetCore.App 2.1.1 requires Microsoft.EntityFrameworkCore.SqlServer (>= 2.1.1 && < 2.2.0) but version Microsoft.EntityFrameworkCore.SqlServer 3.0.0 was resolved.",
+      "libraryId": "Microsoft.EntityFrameworkCore.SqlServer",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v2.1"
+      ]
+    },
+    {
+      "code": "NU1202",
+      "level": "Error",
+      "message": "Package Microsoft.EntityFrameworkCore.SqlServer 3.0.0 is not compatible with netcoreapp2.1 (.NETCoreApp,Version=v2.1). Package Microsoft.EntityFrameworkCore.SqlServer 3.0.0 supports: netstandard2.1 (.NETStandard,Version=v2.1)",
+      "libraryId": "Microsoft.EntityFrameworkCore.SqlServer",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v2.1"
+      ]
+    }
+  ]
 }
