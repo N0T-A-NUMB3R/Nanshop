@@ -9,6 +9,6 @@ namespace ArticoliWebService.Models
         [MinLength(5, ErrorMessage = " Il numero minimo di caratteri è 5")]
         [MaxLength(80, ErrorMessage = "Il numero massimo di caratteri è 80")]
         public string Info{ get; set; }
-        public virtual Articoli Articolo {get; set;}
+        public virtual Articoli Articolo { get; set; }
     }
 }

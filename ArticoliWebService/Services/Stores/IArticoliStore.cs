@@ -1,15 +1,16 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using ArticoliWebService.Models;
 
 namespace ArticoliWebService.Services.Stores
 {
     public interface IArticoliStore
     {
-        ICollection<Articoli> GetArticoliByDescr(string descrizione);
+        Task<ICollection<Articoli>> GetArticoliByDescr(string descrizione);
 
-        Articoli GetArticoloByCodice(string codice);
+        Task<Articoli> GetArticoloByCodice(string codice);
 
-        Articoli GetArticoloByEan(string ean);
+        Task<Articoli> GetArticoloByEan(string ean);
 
         bool InsertArticolo(Articoli articolo);
 
@@ -19,7 +20,7 @@ namespace ArticoliWebService.Services.Stores
 
         bool Salva();
 
-        bool ArticoloExists(string code);
+        Task<bool> ArticoloExists(string code);
         
     } 
 }

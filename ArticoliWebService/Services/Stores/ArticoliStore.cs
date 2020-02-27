@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using ArticoliWebService.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace ArticoliWebService.Services.Stores
 {
@@ -11,9 +13,10 @@ namespace ArticoliWebService.Services.Stores
         {
             this.nanshopDbContext = nanshopDbContext;
         }
-        public bool ArticoloExists(string code)
+        public async Task<bool> ArticoloExists(string code)
         {
-            throw new System.NotImplementedException();
+            return await this.nanshopDbContext.Articoli
+            .AnyAsync(ar => ar.CodArt == code);
         }
 
         public bool DeleteArticolo(Articoli articolo)
@@ -21,26 +24,29 @@ namespace ArticoliWebService.Services.Stores
             throw new System.NotImplementedException();
         }
 
-        public ICollection<Articoli> GetArticoliByDescr(string descrizione)
+        public async Task<ICollection<Articoli>> GetArticoliByDescr(string descrizione)
         {
-            return this.nanshopDbContext.Articoli
+            return await this.nanshopDbContext.Articoli
             .Where(art => art.Descrizione.Contains(descrizione))
             .OrderBy(art => art.Descrizione)
-            .ToList();
+            .ToListAsync();
         }
 
-        public Articoli GetArticoloByCodice(string codice)
+        public async Task<Articoli> GetArticoloByCodice(string codice)
         {
-            return this.nanshopDbContext.Articoli
-            .FirstOrDefault(art => art.CodArt.Equals(codice));
+            return await this.nanshopDbContext.Articoli
+            .Where (art => art.CodArt.Equals(codice))
+            .Include(a => a.Barcode)
+            .Include(f => f.FamAssort)
+            .FirstOrDefaultAsync();
         }
 
-        public Articoli GetArticoloByEan(string ean)
+        public async Task<Articoli> GetArticoloByEan(string ean)
         {
-            return this.nanshopDbContext.Barcode
+            return await this.nanshopDbContext.Barcode
             .Where(bc => bc.Barcode.Equals(ean))
             .Select(ar => ar.Articolo)
-            .FirstOrDefault();
+            .FirstOrDefaultAsync();
         }
 
         public bool InsertArticolo(Articoli articolo)
