@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Progetti\\nanshop\\ArticoliWebService\\Articoli-Web-Service.csproj": {}
+    "C:\\Progetti\\nanshop\\ArticoliWebService\\Articoli-Web-Service.csproj": {}
   },
   "projects": {
-    "c:\\Progetti\\nanshop\\ArticoliWebService\\Articoli-Web-Service.csproj": {
+    "C:\\Progetti\\nanshop\\ArticoliWebService\\Articoli-Web-Service.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Progetti\\nanshop\\ArticoliWebService\\Articoli-Web-Service.csproj",
+        "projectUniqueName": "C:\\Progetti\\nanshop\\ArticoliWebService\\Articoli-Web-Service.csproj",
         "projectName": "Articoli-Web-Service",
-        "projectPath": "c:\\Progetti\\nanshop\\ArticoliWebService\\Articoli-Web-Service.csproj",
+        "projectPath": "C:\\Progetti\\nanshop\\ArticoliWebService\\Articoli-Web-Service.csproj",
         "packagesPath": "C:\\Users\\fabion\\.nuget\\packages\\",
-        "outputPath": "c:\\Progetti\\nanshop\\ArticoliWebService\\obj\\",
+        "outputPath": "C:\\Progetti\\nanshop\\ArticoliWebService\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -50,7 +50,7 @@
             },
             "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",
-              "version": "[3.0.0, )"
+              "version": "[2.1.1, )"
             },
             "Microsoft.NETCore.App": {
               "suppressParent": "All",

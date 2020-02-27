@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
 
 namespace ArticoliWebService.Models
 {
@@ -11,5 +12,6 @@ namespace ArticoliWebService.Models
         public string Descrizione { get; set; }
         [Required]
         public int Aliquota { get; set; }
+        public virtual ICollection<Articoli> Articoli { get; set; }
     }
 }
