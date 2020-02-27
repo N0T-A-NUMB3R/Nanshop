@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Progetti\\nanshop\\ArticoliWebService\\Articoli-Web-Service.csproj": {}
+    "c:\\progetti\\nanshop\\ArticoliWebService\\Articoli-Web-Service.csproj": {}
   },
   "projects": {
-    "C:\\Progetti\\nanshop\\ArticoliWebService\\Articoli-Web-Service.csproj": {
+    "c:\\progetti\\nanshop\\ArticoliWebService\\Articoli-Web-Service.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Progetti\\nanshop\\ArticoliWebService\\Articoli-Web-Service.csproj",
+        "projectUniqueName": "c:\\progetti\\nanshop\\ArticoliWebService\\Articoli-Web-Service.csproj",
         "projectName": "Articoli-Web-Service",
-        "projectPath": "C:\\Progetti\\nanshop\\ArticoliWebService\\Articoli-Web-Service.csproj",
+        "projectPath": "c:\\progetti\\nanshop\\ArticoliWebService\\Articoli-Web-Service.csproj",
         "packagesPath": "C:\\Users\\fabion\\.nuget\\packages\\",
-        "outputPath": "C:\\Progetti\\nanshop\\ArticoliWebService\\obj\\",
+        "outputPath": "c:\\progetti\\nanshop\\ArticoliWebService\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
