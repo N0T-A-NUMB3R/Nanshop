@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace ArticoliWebService.Controllers
 {
     [ApiController]
-    [DisableCors]
     [Produces("application/json")]
     [Route("api/articoli")]
     public class ArticoliController : Controller

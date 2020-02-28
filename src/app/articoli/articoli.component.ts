@@ -22,7 +22,8 @@ export class Articoli{
 })
 export class ArticoliComponent implements OnInit {
   numArt = 0;
-
+  righe = 10;
+  pagina = 1;
   articoli : Articoli [];
 
   constructor(private articoliService : ArticoliDataService) { }
