@@ -13,6 +13,7 @@ namespace ArticoliWebService.Dtos
         public double? PesoNetto { get; set; }
         public DateTime? DataCreazione { get; set; }
 
+        public string IdStatoArt { get; set; }
         public ICollection<BarcodeDTO> Ean {get; set;}
 
         public FamAssortDTO FamAssort{get; set;}

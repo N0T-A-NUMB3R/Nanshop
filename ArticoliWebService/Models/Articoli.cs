@@ -22,7 +22,8 @@ namespace ArticoliWebService.Models
         [Range(0.01, 100, ErrorMessage = "I pezzi devono essere compresi tra 0.01 e 100")]
         public double? PesoNetto { get; set;}
         public DateTime? DataCreazione {get; set;}
-        
+
+        public string IdStatoArt { get; set; }
         public virtual ICollection<Ean> Barcode {get; set;}
         public virtual Ingredienti Ingredienti {get; set;}
         public virtual Iva Iva {get; set;}

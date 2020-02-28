@@ -30,9 +30,14 @@ namespace Articoli_Web_Service
         public void ConfigureServices(IServiceCollection services)
         {
             var connectionString = Configuration["connectionStrings:NanshopDbCs"];
+            services.AddCors();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            
             services.AddDbContext<NanshopDbContext>(ctx => ctx.UseSqlServer(connectionString));
+            
             services.AddScoped<IArticoliStore,ArticoliStore>();
+
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -46,12 +51,9 @@ namespace Articoli_Web_Service
             {
                 app.UseHsts();
             }
-            // abilitare tutto va bene solo in sviluppo...
-            app.UseCors( x => x
-                .AllowAnyHeader()
-                .AllowAnyMethod()
-                .AllowAnyOrigin()
-                .AllowCredentials()
+           
+            app.UseCors(
+                options => options.WithOrigins("http://localhost:4200").AllowAnyMethod()
             );
 
             app.UseHttpsRedirection();

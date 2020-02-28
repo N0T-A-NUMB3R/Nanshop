@@ -3,16 +3,18 @@ using System.Threading.Tasks;
 using ArticoliWebService.Dtos;
 using ArticoliWebService.Models;
 using ArticoliWebService.Services.Stores;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ArticoliWebService.Controllers
 {
     [ApiController]
+    [DisableCors]
     [Produces("application/json")]
     [Route("api/articoli")]
     public class ArticoliController : Controller
     {
-        private IArticoliStore articoliStore {get; set;}
+        private readonly IArticoliStore articoliStore;
 
         public ArticoliController(IArticoliStore articoliStore)
         {
@@ -47,7 +49,8 @@ namespace ArticoliWebService.Controllers
                     PzCart = articolo.PzCart,
                     PesoNetto = articolo.PesoNetto,
                     DataCreazione = articolo.DataCreazione,
-                    Categoria = articolo.FamAssort.Descrizione
+                    IdStatoArt = articolo.IdStatoArt,
+                   
                 });
             }
 
@@ -90,6 +93,7 @@ namespace ArticoliWebService.Controllers
                 PzCart = articolo.PzCart,
                 PesoNetto = articolo.PesoNetto,
                 DataCreazione = articolo.DataCreazione,
+                IdStatoArt = articolo.IdStatoArt,
                 Ean = barcodeDTO,
                 FamAssort = famAssortDTO
             };
@@ -117,6 +121,8 @@ namespace ArticoliWebService.Controllers
                 PzCart = articolo.PzCart,
                 PesoNetto = articolo.PesoNetto,
                 DataCreazione = articolo.DataCreazione,
+                IdStatoArt = articolo.IdStatoArt
+                
             };
 
             return Ok(articoloDTO);
