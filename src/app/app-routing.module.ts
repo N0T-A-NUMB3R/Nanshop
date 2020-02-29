@@ -15,6 +15,7 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'welcome/:userId', component: WelcomeComponent, canActivate:[RouteGuardService] },
   { path: 'articoli', component: ArticoliComponent, canActivate:[RouteGuardService]  },
+  { path: 'articoli/:filter', component: ArticoliComponent, canActivate: [RouteGuardService] },
   { path: '**', component: ErrorComponent }
 
 
