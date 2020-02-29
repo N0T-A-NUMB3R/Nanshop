@@ -18,8 +18,6 @@ const routes: Routes = [
   { path: 'articoli/:filter', component: ArticoliComponent, canActivate: [RouteGuardService] },
   { path: '**', component: ErrorComponent }
 
-
-
 ];
 
 @NgModule({

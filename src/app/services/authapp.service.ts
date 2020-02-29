@@ -9,7 +9,7 @@ export class AuthappService {
 
   autentica(UserId, Password) {
 
-    if (UserId === 'Nicola' && Password === '123') 
+    if (UserId === 'nan' && Password === '123') 
     {
       sessionStorage.setItem("Utente", UserId);
       return true;

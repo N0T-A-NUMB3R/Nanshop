@@ -6,12 +6,19 @@ import { Articoli } from 'src/app/articoli/articoli.component';
   providedIn: 'root'
 })
 export class ArticoliDataService {
+  
+  server = "localhost";
+  port = "5051";
 
   constructor(public httpClient: HttpClient) { }
 
-    getArticoli(descrizione : string){
-
-      return this.httpClient.get<Articoli[]>(`http://localhost:5051/api/articoli/cerca/descrizione/${descrizione}`);
-
+    getArticoliByDesc(descrizione : string){
+      return this.httpClient.get<Articoli[]>(`http://${this.server}:${this.port}/api/articoli/cerca/descrizione/${descrizione}`);
+    }
+    getArticoloByCodice(codArt : string) {
+      return this.httpClient.get<Articoli>(`http://${this.server}:${this.port}/api/articoli/cerca/codice/${codArt}`);
+    }
+    getArticoliByEan(barCode : string) {
+      return this.httpClient.get<Articoli[]>(`http://${this.server}:${this.port}/api/articoli/cerca/ean/${barCode}`);
     }
 }

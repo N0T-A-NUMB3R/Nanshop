@@ -28,6 +28,7 @@ export class ArticoliComponent implements OnInit {
   pagina = 1;
   filter : string = '';
   articoli : Articoli [];
+  articolo : Articoli;
 
   constructor(private articoliService : ArticoliDataService, private route : ActivatedRoute) { }
 
@@ -45,11 +46,29 @@ export class ArticoliComponent implements OnInit {
   }
   
   public getArticoli (filter : string){
-    this.articoliService.getArticoli(filter).subscribe(
+    
+    this.articoliService.getArticoloByCodice(filter).subscribe(
       response => {
-        console.log('Ricerchiamo articoli con filtro' + filter);
-        this.articoli = response;
-        this.numArt = this.articoli.length;
+        //faccio un po di richieste a catena dando la priorità al codice interno
+        this.articoli = [];
+        console.log('Ricerchiamo articoli per codice' + filter);
+        
+        this.articolo = response;
+        console.log(this.articolo);
+        this.articoli.push(this.articolo);
+        this.numArt = 1;
+      },
+      error => {
+        console.log(error);
+        console.log('Ricerchiamo per descrizione con filtro'+ filter);
+        this.articoliService.getArticoliByDesc(filter).subscribe(
+          response => {
+            this.articoli = response;
+            console.log(this.articoli);
+            this.numArt = this.articoli.length;
+          })
       })
   }
 }
+
+  
