@@ -45,30 +45,61 @@ export class ArticoliComponent implements OnInit {
     this.getArticoli(this.filter);
   }
   
-  public getArticoli (filter : string){
-    
+  public getArticoli(filter: string) {
+
     this.articoliService.getArticoloByCodice(filter).subscribe(
       response => {
-        //faccio un po di richieste a catena dando la priorità al codice interno
+
         this.articoli = [];
-        console.log('Ricerchiamo articoli per codice' + filter);
-        
+
+        console.log('Ricerchiamo articoli per codart con filtro ' + filter);
+
         this.articolo = response;
         console.log(this.articolo);
+
         this.articoli.push(this.articolo);
-        this.numArt = 1;
+        this.numArt = this.articoli.length
+        console.log(this.articoli.length);
+
       },
       error => {
-        console.log(error);
-        console.log('Ricerchiamo per descrizione con filtro'+ filter);
+        console.log(error.error);
+
+        console.log('Ricerchiamo per descrizione con filtro ' + filter);
         this.articoliService.getArticoliByDesc(filter).subscribe(
           response => {
+
             this.articoli = response;
             console.log(this.articoli);
-            this.numArt = this.articoli.length;
-          })
-      })
-  }
-}
 
-  
+            this.numArt = this.articoli.length
+            console.log(this.articoli.length);
+
+          },
+          error => {
+            console.log(error.error);
+            console.log('Ricerchiamo per EAN con filtro ' + filter);
+
+            this.articoliService.getArticoliByEan(filter).subscribe(
+              response => {
+                this.articoli = [];
+
+                this.articolo = response;
+                console.log(this.articolo);
+
+                this.articoli.push(this.articolo);
+                this.numArt = this.articoli.length
+                console.log(this.articoli.length);
+              },
+              error => {
+                console.log(error.error);
+                this.articoli = [];
+              }
+            )
+          }
+        )
+      }
+    )
+  }
+
+}

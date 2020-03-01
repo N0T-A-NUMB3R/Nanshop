@@ -102,7 +102,7 @@ namespace ArticoliWebService.Controllers
         [HttpGet("cerca/ean/{ean}")]
         [ProducesResponseType(404)]
         [ProducesResponseType(200, Type = typeof(ArticoliDTO))]
-        public async Task<IActionResult> GetArticoliByEan(string ean)
+        public async Task<IActionResult> GetArticoloByEan(string ean)
         {
             var articoliDTO = new List<ArticoliDTO>();
             var articolo = await articoliStore.GetArticoloByEan(ean);
