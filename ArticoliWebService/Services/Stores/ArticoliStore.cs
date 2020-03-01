@@ -21,7 +21,8 @@ namespace ArticoliWebService.Services.Stores
 
         public bool DeleteArticolo(Articoli articolo)
         {
-            throw new System.NotImplementedException();
+            this.nanshopDbContext.Articoli.Remove(articolo);;
+            return Salva();
         }
 
         public async Task<ICollection<Articoli>> GetArticoliByDescr(string descrizione)
@@ -51,17 +52,20 @@ namespace ArticoliWebService.Services.Stores
 
         public bool InsertArticolo(Articoli articolo)
         {
-            throw new System.NotImplementedException();
+            this.nanshopDbContext.Add(articolo);
+            return Salva();
         }
 
         public bool Salva()
         {
-            throw new System.NotImplementedException();
+            var saved = this.nanshopDbContext.SaveChanges();
+            return saved >= 0 ? true : false;
         }
 
         public bool UpdateArticolo(Articoli articolo)
         {
-            throw new System.NotImplementedException();
+            this.nanshopDbContext.Articoli.Update(articolo);
+            return Salva();
         }
     }
 }

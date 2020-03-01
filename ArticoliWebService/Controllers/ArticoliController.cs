@@ -110,7 +110,7 @@ namespace ArticoliWebService.Controllers
             if (articolo == null)
             {
                 return NotFound(string.Format("Non è stato trovato l'articolo con ean '{0}'", ean));
-            }
+            }   
             var articoloDTO = new ArticoliDTO
             {
                 CodArt = articolo.CodArt,

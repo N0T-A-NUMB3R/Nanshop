@@ -19,6 +19,6 @@ export class ArticoliDataService {
       return this.httpClient.get<Articoli>(`http://${this.server}:${this.port}/api/articoli/cerca/codice/${codArt}`);
     }
     getArticoliByEan(barCode : string) {
-      return this.httpClient.get<Articoli[]>(`http://${this.server}:${this.port}/api/articoli/cerca/ean/${barCode}`);
+      return this.httpClient.get<Articoli>(`http://${this.server}:${this.port}/api/articoli/cerca/ean/${barCode}`);
     }
 }
