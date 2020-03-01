@@ -55,7 +55,7 @@ namespace ArticoliWebService.Controllers
 
             return Ok(articoliDTO);
         }
-        [HttpGet("cerca/codice/{codice}")]
+        [HttpGet("cerca/codice/{codice}", Name = "GetArticolo")]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
         [ProducesResponseType(200, Type = typeof(ArticoliDTO))]
@@ -125,6 +125,44 @@ namespace ArticoliWebService.Controllers
             };
 
             return Ok(articoloDTO);
+        }
+
+        [HttpPost("inserisci")]
+        [ProducesResponseType(201, Type = typeof(Articoli))]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(422)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> PostArticoli ([FromBody] Articoli articolo)
+        {
+            if (articolo == null)
+            {
+                return BadRequest(ModelState);
+            }
+            var isPresent = await articoliStore.GetArticoloByCodice(articolo.CodArt);
+            if (isPresent != null)
+            {
+               ModelState.AddModelError("", $"Articolo {articolo.CodArt} già presente in anagrafica.");
+               return StatusCode(422,ModelState); 
+            }
+            if (!ModelState.IsValid)
+            {
+                var errVal = "";
+                foreach(var ms in ModelState.Values)
+                {
+                    foreach (var error in ms.Errors)
+                    {
+                        errVal += error.ErrorMessage + "|";
+                    }
+                }
+                return BadRequest(errVal);
+            }
+            
+            if(!(articoliStore.InsertArticolo(articolo)))
+            {
+                ModelState.AddModelError("", $"Ci sono stati problemi nell'inserimento dell'articolio:{articolo.CodArt}");
+                return StatusCode(500, ModelState);
+            }
+            return CreatedAtRoute ("GetArticolo", new {codice = articolo.CodArt}, articolo);
         }
         
     }

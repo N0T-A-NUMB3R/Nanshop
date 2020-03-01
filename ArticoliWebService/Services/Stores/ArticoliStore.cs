@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -22,7 +23,7 @@ namespace ArticoliWebService.Services.Stores
         public bool DeleteArticolo(Articoli articolo)
         {
             this.nanshopDbContext.Articoli.Remove(articolo);;
-            return Salva();
+            return Salva().Item1;
         }
 
         public async Task<ICollection<Articoli>> GetArticoliByDescr(string descrizione)
@@ -53,19 +54,19 @@ namespace ArticoliWebService.Services.Stores
         public bool InsertArticolo(Articoli articolo)
         {
             this.nanshopDbContext.Add(articolo);
-            return Salva();
+            return Salva().Item1;
         }
 
-        public bool Salva()
+        public Tuple<bool, int> Salva()
         {
-            var saved = this.nanshopDbContext.SaveChanges();
-            return saved >= 0 ? true : false;
+            var numberOfEntities = this.nanshopDbContext.SaveChanges();
+            return new Tuple<bool,int>(numberOfEntities >= 0 ? true : false, numberOfEntities);
         }
 
         public bool UpdateArticolo(Articoli articolo)
         {
             this.nanshopDbContext.Articoli.Update(articolo);
-            return Salva();
+            return Salva().Item1;
         }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ArticoliWebService.Models;
@@ -18,7 +19,7 @@ namespace ArticoliWebService.Services.Stores
 
         bool DeleteArticolo (Articoli articolo);
 
-        bool Salva();
+        Tuple<bool, int> Salva();
 
         Task<bool> ArticoloExists(string code);
         

@@ -106,7 +106,7 @@ namespace ArticoliWebService.test
             var controller = new ArticoliController(new ArticoliStore(dbContext));
 
             // Act
-            var response = await controller.GetArticoliByEan(Ean) as ObjectResult;
+            var response = await controller.GetArticoloByEan(Ean) as ObjectResult;
             var value = response.Value as ArticoliDTO;
 
             dbContext.Dispose();
@@ -128,7 +128,7 @@ namespace ArticoliWebService.test
             var controller = new ArticoliController(new ArticoliStore(dbContext));
 
             // Act
-            var response = await controller.GetArticoliByEan(Ean) as ObjectResult;
+            var response = await controller.GetArticoloByEan(Ean) as ObjectResult;
             var value = response.Value as ArticoliDTO;
 
             dbContext.Dispose();

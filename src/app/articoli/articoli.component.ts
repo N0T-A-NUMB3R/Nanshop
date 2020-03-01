@@ -4,6 +4,7 @@ import { ArticoliDataService } from '../services/data/articoli-data.service';
 import { from } from 'rxjs';
 
 export class Articoli{
+  
   constructor(
     public codart: string,
     public descrizione: string,
@@ -22,6 +23,7 @@ export class Articoli{
   templateUrl: './articoli.component.html',
   styleUrls: ['./articoli.component.css']
 })
+
 export class ArticoliComponent implements OnInit {
   numArt = 0;
   righe = 10;
