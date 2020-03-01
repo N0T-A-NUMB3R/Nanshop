@@ -43,6 +43,14 @@ namespace ArticoliWebService.Services.Stores
             .FirstOrDefaultAsync();
         }
 
+        public Articoli GetArticoloByCodice2(string codice)
+        {
+            return this.nanshopDbContext.Articoli
+           .Where(art => art.CodArt.Equals(codice))
+           .Include(a => a.Barcode)
+           .Include(f => f.FamAssort)
+           .FirstOrDefault();
+        }
         public async Task<Articoli> GetArticoloByEan(string ean)
         {
             return await this.nanshopDbContext.Barcode

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ArticoliWebService.Dtos;
@@ -40,21 +41,38 @@ namespace ArticoliWebService.Controllers
             }
             foreach (var articolo in articoli)
             {
-                articoliDTO.Add(new ArticoliDTO
-                {
-                    CodArt = articolo.CodArt,
-                    Descrizione = articolo.Descrizione,
-                    Um = articolo.Um,
-                    CodStat = articolo.CodStat,
-                    PzCart = articolo.PzCart,
-                    PesoNetto = articolo.PesoNetto,
-                    DataCreazione = articolo.DataCreazione,
-                    IdStatoArt = articolo.IdStatoArt,
-                });
+                articoliDTO.Add(CreateArticoloDTO(articolo));
             }
 
             return Ok(articoliDTO);
         }
+
+        private ArticoliDTO CreateArticoloDTO(Articoli articolo)
+        {
+            var barcodeDTO = new List<BarcodeDTO>();
+            foreach (var ean in articolo.Barcode)
+            {
+                barcodeDTO.Add(new BarcodeDTO
+                {
+                    Barcode = ean.Barcode,
+                    Tipo = ean.IdTipoArt
+                });
+            }
+            return  new ArticoliDTO
+            {
+                CodArt = articolo.CodArt,
+                Descrizione = articolo.Descrizione,
+                Um = articolo.Um,
+                CodStat = articolo.CodStat,
+                PzCart = articolo.PzCart,
+                PesoNetto = articolo.PesoNetto,
+                DataCreazione = articolo.DataCreazione,
+                IdStatoArt = articolo.IdStatoArt,
+                Ean = barcodeDTO,
+                Categoria = (articolo.FamAssort != null) ? articolo.FamAssort.Descrizione : null
+            };
+        }
+
         [HttpGet("cerca/codice/{codice}", Name = "GetArticolo")]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
@@ -67,64 +85,22 @@ namespace ArticoliWebService.Controllers
             }
 
             var articolo = await articoliStore.GetArticoloByCodice(codice);
-            var barcodeDTO = new List<BarcodeDTO>();
-            
-            var famAssortDTO = new FamAssortDTO{
-                id = articolo.FamAssort.id,
-                Descrizione = articolo.FamAssort.Descrizione
-            };
 
-            foreach (var ean in articolo.Barcode)
-            {
-                barcodeDTO.Add(new BarcodeDTO
-                {
-                    Barcode = ean.Barcode,
-                    Tipo = ean.IdTipoArt
-                });
-            }
-
-            var articoloDTO = new ArticoliDTO 
-            {
-                CodArt = articolo.CodArt,
-                Descrizione = articolo.Descrizione,
-                Um = articolo.Um,
-                CodStat = articolo.CodStat,
-                PzCart = articolo.PzCart,
-                PesoNetto = articolo.PesoNetto,
-                DataCreazione = articolo.DataCreazione,
-                IdStatoArt = articolo.IdStatoArt,
-                Ean = barcodeDTO,
-                FamAssort = famAssortDTO
-            };
-
-            return Ok(articoloDTO);
+            return Ok(CreateArticoloDTO(articolo));
         }
         [HttpGet("cerca/ean/{ean}")]
         [ProducesResponseType(404)]
         [ProducesResponseType(200, Type = typeof(ArticoliDTO))]
         public async Task<IActionResult> GetArticoloByEan(string ean)
         {
-            var articoliDTO = new List<ArticoliDTO>();
             var articolo = await articoliStore.GetArticoloByEan(ean);
 
             if (articolo == null)
             {
                 return NotFound(string.Format("Non è stato trovato l'articolo con ean '{0}'", ean));
             }   
-            var articoloDTO = new ArticoliDTO
-            {
-                CodArt = articolo.CodArt,
-                Descrizione = articolo.Descrizione,
-                Um = articolo.Um,
-                CodStat = articolo.CodStat,
-                PzCart = articolo.PzCart,
-                PesoNetto = articolo.PesoNetto,
-                DataCreazione = articolo.DataCreazione,
-                IdStatoArt = articolo.IdStatoArt
-                
-            };
-
-            return Ok(articoloDTO);
+           
+            return Ok(CreateArticoloDTO(articolo));
         }
 
         [HttpPost("inserisci")]
@@ -132,18 +108,20 @@ namespace ArticoliWebService.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(422)]
         [ProducesResponseType(500)]
-        public async Task<IActionResult> PostArticoli ([FromBody] Articoli articolo)
+        public IActionResult PostArticolo ([FromBody] Articoli articolo)
         {
             if (articolo == null)
             {
                 return BadRequest(ModelState);
             }
-            var isPresent = await articoliStore.GetArticoloByCodice(articolo.CodArt);
+            var isPresent = articoliStore.GetArticoloByCodice2(articolo.CodArt);
+            
             if (isPresent != null)
             {
                ModelState.AddModelError("", $"Articolo {articolo.CodArt} già presente in anagrafica.");
                return StatusCode(422,ModelState); 
             }
+
             if (!ModelState.IsValid)
             {
                 var errVal = "";
@@ -164,6 +142,32 @@ namespace ArticoliWebService.Controllers
             }
             return CreatedAtRoute ("GetArticolo", new {codice = articolo.CodArt}, articolo);
         }
-        
+
+        [HttpPost("modifica")]
+        [ProducesResponseType(201, Type = typeof(InfoMsg))]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(422)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> PutArticolo([FromBody] Articoli articolo)
+        {
+            if (articolo == null)
+            {
+                return BadRequest(ModelState);
+            }
+            var isPresent = await articoliStore.GetArticoloByCodice(articolo.CodArt);
+            if (isPresent == null)
+            {
+                ModelState.AddModelError("", $"Articolo {articolo.CodArt} NON è presente in anagrafica.");
+                return StatusCode(422, ModelState);
+            }
+            if (!(articoliStore.UpdateArticolo(articolo)))
+            {
+                ModelState.AddModelError("", $"Ci sono stati problemi nella modifica dell'articolio:{articolo.CodArt}");
+                return StatusCode(500, ModelState);
+            }
+            var returnMessage = new InfoMsg(DateTime.Now, $"Modifica articolo {articolo.CodArt} eseguita con successo.");
+            return Ok(returnMessage);
+
+        }
     }
 }

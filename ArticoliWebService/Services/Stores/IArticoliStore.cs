@@ -11,6 +11,8 @@ namespace ArticoliWebService.Services.Stores
 
         Task<Articoli> GetArticoloByCodice(string codice);
 
+        Articoli GetArticoloByCodice2(string codice);
+
         Task<Articoli> GetArticoloByEan(string ean);
 
         bool InsertArticolo(Articoli articolo);
