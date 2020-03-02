@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ArticoliWebService.Models;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 namespace ArticoliWebService.Services.Stores
@@ -53,12 +54,18 @@ namespace ArticoliWebService.Services.Stores
         }
         public async Task<Articoli> GetArticoloByEan(string ean)
         {
-            return await this.nanshopDbContext.Barcode
-            .Where(bc => bc.Barcode.Equals(ean))
-            .Select(ar => ar.Articolo)
-            .FirstOrDefaultAsync();
-        }
+            var param = new SqlParameter("@Barcode", ean);
 
+            string Sql = "SELECT A.* FROM [dbo].[ARTICOLI] A JOIN [dbo].[BARCODE] B ";
+            Sql += "ON A.CODART = B.CODART WHERE B.BARCODE = @Barcode";
+
+            return await this.nanshopDbContext.Articoli
+                .FromSqlRaw(Sql, param)
+                .Include(a => a.FamAssort)
+                .Include(a => a.Barcode)
+                .Include(a => a.Iva)
+                .FirstOrDefaultAsync();
+        }
         public bool InsertArticolo(Articoli articolo)
         {
             this.nanshopDbContext.Add(articolo);

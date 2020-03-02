@@ -50,7 +50,7 @@ namespace ArticoliWebService.test
             // Assert
             Assert.Equal(404, response.StatusCode);
             Assert.Null(value);
-            Assert.Equal("Non è stato trovato l'articolo con il codice '0009926010'", response.Value);
+            Assert.Equal("Non è stato trovato l'articolo con codice '0009926010'", response.Value);
         }
 
         [Fact]
@@ -136,7 +136,7 @@ namespace ArticoliWebService.test
             // Assert
             Assert.Equal(404, response.StatusCode);
             Assert.Null(value);
-            Assert.Equal("Non è stato trovato l'articolo con il barcode '80582533A'", response.Value);
+            Assert.Equal("Non è stato trovato l'articolo con ean '80582533A'", response.Value);
         }
 
     }

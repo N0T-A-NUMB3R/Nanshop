@@ -25,16 +25,19 @@ namespace ArticoliWebService.Controllers
         private ArticoliDTO CreateArticoloDTO(Articoli articolo)
         {
             var barcodeDTO = new List<BarcodeDTO>();
-            
-            foreach (var ean in articolo.Barcode)
+            if (articolo.Barcode != null)
             {
-                barcodeDTO.Add(new BarcodeDTO
+                foreach (var ean in articolo.Barcode)
                 {
-                    Barcode = ean.Barcode,
-                    Tipo = ean.IdTipoArt
-                });
+                    barcodeDTO.Add(new BarcodeDTO
+                    {
+                        Barcode = ean.Barcode,
+                        Tipo = ean.IdTipoArt
+                    });
+                }
             }
-            return  new ArticoliDTO
+            
+            return new ArticoliDTO
             {
                 CodArt = articolo.CodArt,
                 Descrizione = articolo.Descrizione,
