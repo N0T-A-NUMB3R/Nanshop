@@ -22,34 +22,10 @@ namespace ArticoliWebService.Controllers
             this.articoliStore = articoliStore;
         }
 
-        [HttpGet("cerca/descrizione/{filter}")]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(404)]
-        [ProducesResponseType(200, Type = typeof(IEnumerable<ArticoliDTO>))]
-        public async Task<IActionResult> GetArticoliByDesc (string filter)
-        {
-            var articoliDTO = new List<ArticoliDTO>();
-            var articoli = await articoliStore.GetArticoliByDescr(filter);
-            
-            if(!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            if (articoli.Count == 0)
-            {
-                return NotFound(string.Format("Non è stato trovato alcun articolo con il filtro '{0}'", filter));
-            }
-            foreach (var articolo in articoli)
-            {
-                articoliDTO.Add(CreateArticoloDTO(articolo));
-            }
-
-            return Ok(articoliDTO);
-        }
-
         private ArticoliDTO CreateArticoloDTO(Articoli articolo)
         {
             var barcodeDTO = new List<BarcodeDTO>();
+            
             foreach (var ean in articolo.Barcode)
             {
                 barcodeDTO.Add(new BarcodeDTO
@@ -62,16 +38,55 @@ namespace ArticoliWebService.Controllers
             {
                 CodArt = articolo.CodArt,
                 Descrizione = articolo.Descrizione,
-                Um = articolo.Um,
-                CodStat = articolo.CodStat,
+                Um = (articolo.Um != null) ? articolo.Um.Trim() : "",
+                CodStat = (articolo.CodStat != null) ? articolo.CodStat.Trim() : "",
                 PzCart = articolo.PzCart,
                 PesoNetto = articolo.PesoNetto,
                 DataCreazione = articolo.DataCreazione,
-                IdStatoArt = articolo.IdStatoArt,
                 Ean = barcodeDTO,
-                Categoria = (articolo.FamAssort != null) ? articolo.FamAssort.Descrizione : null
+                IdFamAss = articolo.IdFamAss,
+                IdStatoArt = (articolo.IdStatoArt != null) ? articolo.IdStatoArt.Trim() : "",
+                IdIva = articolo.IdIva,
+                Categoria = (articolo.FamAssort != null) ? articolo.FamAssort.Descrizione : "Non Definito"
             };
         }
+
+        [HttpGet("cerca/descrizione/{filter}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<ArticoliDTO>))]
+        public async Task<IActionResult> GetArticoliByDesc(string filter)
+        {
+            var articoliDTO = new List<ArticoliDTO>();
+            var articoli = await articoliStore.GetArticoliByDescr(filter);
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            if (articoli.Count == 0)
+            {
+                return NotFound(string.Format("Non è stato trovato alcun articolo con il filtro '{0}'", filter));
+            }
+            foreach (var articolo in articoli)
+            {
+                articoliDTO.Add(new ArticoliDTO
+                {
+                    CodArt = articolo.CodArt,
+                    Descrizione = articolo.Descrizione,
+                    Um = articolo.Um,
+                    CodStat = articolo.CodStat,
+                    PzCart = articolo.PzCart,
+                    PesoNetto = articolo.PesoNetto,
+                    DataCreazione = articolo.DataCreazione,
+                    IdStatoArt = articolo.IdStatoArt,
+                    Categoria = (articolo.FamAssort != null) ? articolo.FamAssort.Descrizione : null
+                });
+            }
+
+            return Ok(articoliDTO);
+        }
+
 
         [HttpGet("cerca/codice/{codice}", Name = "GetArticolo")]
         [ProducesResponseType(400)]
@@ -88,6 +103,7 @@ namespace ArticoliWebService.Controllers
 
             return Ok(CreateArticoloDTO(articolo));
         }
+
         [HttpGet("cerca/ean/{ean}")]
         [ProducesResponseType(404)]
         [ProducesResponseType(200, Type = typeof(ArticoliDTO))]
@@ -140,7 +156,8 @@ namespace ArticoliWebService.Controllers
                 ModelState.AddModelError("", $"Ci sono stati problemi nell'inserimento dell'articolio:{articolo.CodArt}");
                 return StatusCode(500, ModelState);
             }
-            return CreatedAtRoute ("GetArticolo", new {codice = articolo.CodArt}, articolo);
+            //return CreatedAtRoute ("GetArticolo", new {codice = articolo.CodArt}, articolo);
+            return Ok(new InfoMsg(DateTime.Today, $"Inserimento articolo {articolo.CodArt} eseguita con successo!"));
         }
 
         [HttpPost("modifica")]
@@ -167,6 +184,36 @@ namespace ArticoliWebService.Controllers
             }
             var returnMessage = new InfoMsg(DateTime.Now, $"Modifica articolo {articolo.CodArt} eseguita con successo.");
             return Ok(returnMessage);
+
+        }
+
+        [HttpDelete("elimina/{codice}")]
+        [ProducesResponseType(201, Type = typeof(InfoMsg))]
+        [ProducesResponseType(400, Type = typeof(InfoMsg))]
+        [ProducesResponseType(422, Type = typeof(InfoMsg))]
+        [ProducesResponseType(500)]
+        public IActionResult DeleteArticolo(string codice)
+        {
+            if (codice == "")
+            {
+                return BadRequest(new InfoMsg(DateTime.Today, $"E' necessario inserire il codice dell'articolo da eliminare!"));
+            }
+
+            //Contolliamo se l'articolo è presente (Usare il metodo senza Traking)
+            var articolo = articoliStore.GetArticoloByCodice2(codice);
+
+            if (articolo == null)
+            {
+                return StatusCode(422, new InfoMsg(DateTime.Today, $"Articolo {codice} NON presente in anagrafica! Impossibile Eliminare!"));
+            }
+
+            //verifichiamo che i dati siano stati regolarmente eliminati dal database
+            if (!articoliStore.DeleteArticolo(articolo))
+            {
+                return StatusCode(500, new InfoMsg(DateTime.Today, $"Ci sono stati problemi nella eliminazione dell'Articolo {articolo.CodArt}.  "));
+            }
+
+            return Ok(new InfoMsg(DateTime.Today, $"Eliminazione articolo {codice} eseguita con successo!"));
 
         }
     }
