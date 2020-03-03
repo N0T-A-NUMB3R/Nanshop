@@ -17,20 +17,30 @@ namespace ArticoliWebService.test
     {
         private Articoli CreateArtTest()
         {
-            // Creazione Articolo
-            var Articolo = new Articoli() {CodArt = "123456A", Descrizione = "Articolo Test Inserimento", 
-                Um = "PZ", CodStat = "TESTART", PzCart = 6, PesoNetto = 1.750, IdIva = 10, IdFamAss = 1, 
-                IdStatoArt = "1", DataCreazione = DateTime.Today};
+            var Articolo = new Articoli()
+            {
+                CodArt = "124ProvaIns",
+                Descrizione = "Articolo Test Inserimento",
+                Um = "PZ",
+                CodStat = "TESTART",
+                PzCart = 6,
+                PesoNetto = 1.750,
+                IdIva = 10,
+                IdFamAss = 1,
+                IdStatoArt = "1",
+                DataCreazione = DateTime.Today
+            };
 
             //Creazione Barcode 
             List<Ean> Barcodes = new List<Ean>();
-            var Barcode = new Ean {CodArt="123456A", Barcode = "12121212", IdTipoArt = "CP"};
+            var Barcode = new Ean { CodArt = "124ProvaIns", Barcode = "85698742", IdTipoArt = "CP" };
             Barcodes.Add(Barcode);
 
             //Passiamo il Barcode all'Articolo
             Articolo.Barcode = Barcodes;
 
             return Articolo;
+        
         }
 
 
@@ -50,7 +60,7 @@ namespace ArticoliWebService.test
             // Assert
             Assert.Equal(200, response.StatusCode);
             Assert.NotNull(value);
-            Assert.Equal("Inserimento articolo 123456A eseguita con successo!", value.Message);
+            Assert.Equal("Inserimento articolo 124ProvaIns eseguita con successo!", value.Message);
         }
 
         [Fact]
@@ -69,11 +79,11 @@ namespace ArticoliWebService.test
             // Assert
             Assert.Equal(422, response.StatusCode);
             Assert.NotNull(value);
-            Assert.Equal("Articolo 123456A presente in anagrafica! Impossibile utilizzare il metodo POST!", value.Message);
+            Assert.Equal("Articolo 124ProvaIns presente in anagrafica! Impossibile utilizzare il metodo POST!", value.Message);
         }
 
         [Fact]
-        public async Task CTestPutArticoloAsync()
+        public void CTestPutArticolo()
         {
             // Arrange
             var dbContext = DbContextMocker.nanshopDbContext();
@@ -83,7 +93,7 @@ namespace ArticoliWebService.test
             articolo.Descrizione = "Articolo Test Inserimento Modificato";
 
             // Act
-            var response = await controller.PutArticolo(articolo) as ObjectResult;
+            var response = controller.PutArticolo(articolo) as ObjectResult;
             var value = response.Value as InfoMsg;
 
             dbContext.Dispose();
@@ -91,7 +101,7 @@ namespace ArticoliWebService.test
              // Assert
             Assert.Equal(200, response.StatusCode);
             Assert.NotNull(value);
-            Assert.Equal("Modifica articolo 123456A eseguita con successo!", value.Message);
+            Assert.Equal("Modifica articolo 124ProvaIns eseguita con successo!", value.Message);
         }
 
         [Fact]
@@ -102,7 +112,7 @@ namespace ArticoliWebService.test
             var controller = new ArticoliController(new ArticoliStore(dbContext), MapperMocker.GetMapper());
 
             // Act
-            var response = controller.DeleteArticolo("123456A") as ObjectResult;
+            var response = controller.DeleteArticolo("124ProvaIns") as ObjectResult;
             var value = response.Value as InfoMsg;
 
             dbContext.Dispose();
@@ -110,7 +120,7 @@ namespace ArticoliWebService.test
              // Assert
             Assert.Equal(200, response.StatusCode);
             Assert.NotNull(value);
-            Assert.Equal("Eliminazione articolo 123456A eseguita con successo!", value.Message);
+            Assert.Equal("Eliminazione articolo 124ProvaIns eseguita con successo!", value.Message);
 
         }
     }

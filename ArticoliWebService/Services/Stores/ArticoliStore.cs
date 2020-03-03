@@ -23,7 +23,7 @@ namespace ArticoliWebService.Services.Stores
 
         public bool DeleteArticolo(Articoli articolo)
         {
-            this.nanshopDbContext.Articoli.Remove(articolo);;
+            this.nanshopDbContext.Articoli.Remove(articolo);
             return Salva().Item1;
         }
 
@@ -31,6 +31,7 @@ namespace ArticoliWebService.Services.Stores
         {
             return await this.nanshopDbContext.Articoli
             .Where(art => art.Descrizione.Contains(descrizione))
+            .Include(a => a.FamAssort)
             .OrderBy(art => art.Descrizione)
             .ToListAsync();
         }
@@ -57,16 +58,16 @@ namespace ArticoliWebService.Services.Stores
             .Where (art => art.CodArt.Equals(codice))
             .Include(a => a.Barcode)
             .Include(f => f.FamAssort)
+            .Include(a => a.Iva)
             .FirstOrDefaultAsync();
         }
 
         public Articoli GetArticoloByCodice2(string codice)
         {
             return this.nanshopDbContext.Articoli
-           .Where(art => art.CodArt.Equals(codice))
-           .Include(a => a.Barcode)
-           .Include(f => f.FamAssort)
-           .FirstOrDefault();
+            .AsNoTracking()
+            .Where(art => art.CodArt.Equals(codice))
+            .FirstOrDefault();
         }
         public async Task<Articoli> GetArticoloByEan(string ean)
         {

@@ -12,7 +12,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace ArticoliWebService.Controllers
 {
     [ApiController]
-    [DisableCors]
     [Produces("application/json")]
     [Route("api/articoli")]
     public class ArticoliController : Controller
@@ -47,7 +46,7 @@ namespace ArticoliWebService.Controllers
                 Descrizione = articolo.Descrizione,
                 Um = (articolo.Um != null) ? articolo.Um.Trim() : "",
                 CodStat = (articolo.CodStat != null) ? articolo.CodStat.Trim() : "",
-                PzCart = (short)articolo.PzCart,
+                PzCart = articolo.PzCart,
                 PesoNetto = articolo.PesoNetto,
                 DataCreazione = articolo.DataCreazione,
                 Ean = barcodeDTO,
@@ -124,18 +123,11 @@ namespace ArticoliWebService.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var isPresent = articoliStore.GetArticoloByCodice2(articolo.CodArt);
-            
-            if (isPresent != null)
-            {
-               ModelState.AddModelError("", $"Articolo {articolo.CodArt} già presente in anagrafica.");
-               return StatusCode(422,ModelState); 
-            }
 
             if (!ModelState.IsValid)
             {
                 var errVal = "";
-                foreach(var ms in ModelState.Values)
+                foreach (var ms in ModelState.Values)
                 {
                     foreach (var error in ms.Errors)
                     {
@@ -144,13 +136,21 @@ namespace ArticoliWebService.Controllers
                 }
                 return BadRequest(errVal);
             }
+
+            var isPresent = articoliStore.GetArticoloByCodice2(articolo.CodArt);
+            
+            if (isPresent != null)
+            {
+               return StatusCode(422, new InfoMsg(DateTime.Today, $"Articolo {articolo.CodArt} presente in anagrafica! Impossibile utilizzare il metodo POST!")); 
+            }
+
+            articolo.DataCreazione = DateTime.Today;
             
             if(!(articoliStore.InsertArticolo(articolo)))
             {
-                ModelState.AddModelError("", $"Ci sono stati problemi nell'inserimento dell'articolio:{articolo.CodArt}");
-                return StatusCode(500, ModelState);
+                return StatusCode(500, new InfoMsg(DateTime.Today, $"Ci sono stati problemi nell'inserimento dell'Articolo {articolo.CodArt}."));
             }
-            //return CreatedAtRoute ("GetArticolo", new {codice = articolo.CodArt}, articolo);
+
             return Ok(new InfoMsg(DateTime.Today, $"Inserimento articolo {articolo.CodArt} eseguita con successo!"));
         }
 
@@ -159,25 +159,40 @@ namespace ArticoliWebService.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(422)]
         [ProducesResponseType(500)]
-        public async Task<IActionResult> PutArticolo([FromBody] Articoli articolo)
+        public IActionResult PutArticolo([FromBody] Articoli articolo)
         {
             if (articolo == null)
             {
                 return BadRequest(ModelState);
             }
-            var isPresent = await articoliStore.GetArticoloByCodice(articolo.CodArt);
+            
+            if (!ModelState.IsValid)
+            {
+                string ErrVal = "";
+
+                foreach (var modelState in ModelState.Values)
+                {
+                    foreach (var modelError in modelState.Errors)
+                    {
+                        ErrVal += modelError.ErrorMessage + " - ";
+                    }
+                }
+
+                return BadRequest(new InfoMsg(DateTime.Today, ErrVal));
+            }
+            var isPresent = articoliStore.GetArticoloByCodice(articolo.CodArt);
+            
             if (isPresent == null)
             {
-                ModelState.AddModelError("", $"Articolo {articolo.CodArt} NON è presente in anagrafica.");
-                return StatusCode(422, ModelState);
+                return StatusCode(422, new InfoMsg(DateTime.Today, $"Articolo {articolo.CodArt} NON presente in anagrafica! Impossibile utilizzare il metodo PUT!"));
             }
+
             if (!(articoliStore.UpdateArticolo(articolo)))
             {
-                ModelState.AddModelError("", $"Ci sono stati problemi nella modifica dell'articolio:{articolo.CodArt}");
-                return StatusCode(500, ModelState);
+                return StatusCode(500, new InfoMsg(DateTime.Today, $"Ci sono stati problemi nella modifica dell'Articolo {articolo.CodArt}.  "));
             }
-            var returnMessage = new InfoMsg(DateTime.Now, $"Modifica articolo {articolo.CodArt} eseguita con successo.");
-            return Ok(returnMessage);
+
+            return Ok(new InfoMsg(DateTime.Today, $"Modifica articolo {articolo.CodArt} eseguita con successo!"));
 
         }
 
@@ -193,7 +208,7 @@ namespace ArticoliWebService.Controllers
                 return BadRequest(new InfoMsg(DateTime.Today, $"E' necessario inserire il codice dell'articolo da eliminare!"));
             }
 
-            //Contolliamo se l'articolo è presente (Usare il metodo senza Traking)
+            //Contolliamo se l'articolo è presente (Usare il metodo senza Tracking)
             var articolo = articoliStore.GetArticoloByCodice2(codice);
 
             if (articolo == null)
