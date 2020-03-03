@@ -1,11 +1,8 @@
-using System.Threading.Tasks;
 using Xunit;
 using ArticoliWebService.Controllers;
 using ArticoliWebService.Services.Stores;
-using ArticoliWebService.Dtos;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
 using ArticoliWebService.Models;
 using System;
 using ArticoliWebService.Test;
