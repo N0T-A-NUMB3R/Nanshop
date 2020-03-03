@@ -4,7 +4,9 @@ using System.Threading.Tasks;
 using ArticoliWebService.Dtos;
 using ArticoliWebService.Models;
 using ArticoliWebService.Services.Stores;
+using AutoMapper;
 using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ArticoliWebService.Controllers
@@ -16,10 +18,12 @@ namespace ArticoliWebService.Controllers
     public class ArticoliController : Controller
     {
         private readonly IArticoliStore articoliStore;
+        private readonly IMapper mapper;
 
-        public ArticoliController(IArticoliStore articoliStore)
+        public ArticoliController(IArticoliStore articoliStore, IMapper mapper)
         {
             this.articoliStore = articoliStore;
+            this.mapper = mapper;
         }
 
         private ArticoliDTO CreateArticoloDTO(Articoli articolo)
@@ -43,7 +47,7 @@ namespace ArticoliWebService.Controllers
                 Descrizione = articolo.Descrizione,
                 Um = (articolo.Um != null) ? articolo.Um.Trim() : "",
                 CodStat = (articolo.CodStat != null) ? articolo.CodStat.Trim() : "",
-                PzCart = articolo.PzCart,
+                PzCart = (short)articolo.PzCart,
                 PesoNetto = articolo.PesoNetto,
                 DataCreazione = articolo.DataCreazione,
                 Ean = barcodeDTO,
@@ -55,13 +59,15 @@ namespace ArticoliWebService.Controllers
         }
 
         [HttpGet("cerca/descrizione/{filter}")]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(404)]
-        [ProducesResponseType(200, Type = typeof(IEnumerable<ArticoliDTO>))]
-        public async Task<IActionResult> GetArticoliByDesc(string filter)
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<ArticoliDTO>))]
+        public async Task<ActionResult<IEnumerable<ArticoliDTO>>> GetArticoliByDesc(string filter,
+        [FromQuery] string idCat)
         {
+            //utilizzamdo ActionResult<T> anziche IasctionRes per ottimizzare i tempi
             var articoliDTO = new List<ArticoliDTO>();
-            var articoli = await articoliStore.GetArticoliByDescr(filter);
+            var articoli = await articoliStore.GetArticoliByDescr(filter, idCat);
 
             if (!ModelState.IsValid)
             {
@@ -71,23 +77,8 @@ namespace ArticoliWebService.Controllers
             {
                 return NotFound(string.Format("Non è stato trovato alcun articolo con il filtro '{0}'", filter));
             }
-            foreach (var articolo in articoli)
-            {
-                articoliDTO.Add(new ArticoliDTO
-                {
-                    CodArt = articolo.CodArt,
-                    Descrizione = articolo.Descrizione,
-                    Um = articolo.Um,
-                    CodStat = articolo.CodStat,
-                    PzCart = articolo.PzCart,
-                    PesoNetto = articolo.PesoNetto,
-                    DataCreazione = articolo.DataCreazione,
-                    IdStatoArt = articolo.IdStatoArt,
-                    Categoria = (articolo.FamAssort != null) ? articolo.FamAssort.Descrizione : null
-                });
-            }
-
-            return Ok(articoliDTO);
+           
+            return Ok(mapper.Map<IEnumerable<ArticoliDTO>>(articoli));
         }
 
 

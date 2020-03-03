@@ -17,7 +17,6 @@ namespace ArticoliWebService.Services
 
         protected override void OnModelCreating (ModelBuilder modelBuilder)
         {
-
             //Relazione one to many (uno a molti) fra articoli e barcode
             modelBuilder.Entity<Ean>()
                 .HasOne<Articoli>(s => s.Articolo) //ad un articolo...

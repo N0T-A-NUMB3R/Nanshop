@@ -9,13 +9,13 @@
                     <h2>Risultati Ricerca: <small>Trovati {{numArt}} Articoli</small></h2>
                 </div>
                 <div class="col-sm-7">
-
+                    <button style="margin-left: 20px;" class="btn btn-success float-right">Nuovo Articolo</button>
                 </div>
             </div>
         </div>
         <div class="table-filter">
             <div class="row">
-                <div class="col-sm-3">
+                <div class="col-sm-2">
                     <div class="show-entries">
                         <span>Mostra</span>
                         <select class="form-control">
@@ -28,7 +28,7 @@
                     </div>
                 </div>
                 <div class="col-sm-9">
-                    <button type="button" (click)="refresh()" class="btn btn-primary"> <i class="fa fa-search"> </i> </button>
+                    <button type="button" (click)="refresh()" class="btn btn-primary"> <i class="fa fa-search"> </i>Cerca</button>
                     <div class="filter-group">
                         <label>Filtro: </label>
                         <input type="text" class="form-control" [(ngModel)]="filter">
@@ -47,6 +47,8 @@
                     <th>Prezzo</th>
                     <th>Attivo</th>
                     <th>Data</th>
+                    <th></th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -58,7 +60,15 @@
                     <td>{{articolo.pesoNetto}}</td>
                     <td class="text-right">{{articolo.prezzo | currency:'EUR'}}</td>
                     <td>{{articolo.idStatoArt}}</td>
-                    <td>{{articolo.dataCreazione | date}}</td>
+                    <td>{{articolo.dataCreazione | date:'shortDate'}}</td>
+                    <td>
+                        <button class="btn btn-warning table-buttons">
+                        <span class="oi oi-pencil"></span> Modifica</button>
+                    </td>
+                    <td>
+                        <button (click)="Elimina(articolo.codArt)" class="btn btn-danger table-buttons">
+                        <span class="oi oi-trash"></span> Elimina</button>
+                    </td>
                 </tr>
             </tbody>
         </table>

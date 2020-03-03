@@ -8,21 +8,23 @@ using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using ArticoliWebService.Models;
 using System;
+using ArticoliWebService.Test;
 
 namespace ArticoliWebService.test
 {
+    [TestCaseOrderer("ArticoliWebService.test.AlphabeticalOrderer", "ArticoliWebService.test")]
     public class ArticoliControllerTestCrud
     {
         private Articoli CreateArtTest()
         {
             // Creazione Articolo
-            var Articolo = new Articoli() {CodArt = "NANANAN", Descrizione = "Articolo Test Inserimento", 
+            var Articolo = new Articoli() {CodArt = "123456A", Descrizione = "Articolo Test Inserimento", 
                 Um = "PZ", CodStat = "TESTART", PzCart = 6, PesoNetto = 1.750, IdIva = 10, IdFamAss = 1, 
                 IdStatoArt = "1", DataCreazione = DateTime.Today};
 
             //Creazione Barcode 
             List<Ean> Barcodes = new List<Ean>();
-            var Barcode = new Ean {CodArt="NANANAN", Barcode = "00000000", IdTipoArt = "CP"};
+            var Barcode = new Ean {CodArt="123456A", Barcode = "12121212", IdTipoArt = "CP"};
             Barcodes.Add(Barcode);
 
             //Passiamo il Barcode all'Articolo
@@ -33,11 +35,11 @@ namespace ArticoliWebService.test
 
 
         [Fact]
-        public void TestPostArticolo()
+        public void ATestPostArticolo()
         {
             // Arrange
             var dbContext = DbContextMocker.nanshopDbContext();
-            var controller = new ArticoliController(new ArticoliStore(dbContext));
+            var controller = new ArticoliController(new ArticoliStore(dbContext), MapperMocker.GetMapper());
 
             // Act
             var response = controller.PostArticolo(this.CreateArtTest()) as ObjectResult;
@@ -48,15 +50,15 @@ namespace ArticoliWebService.test
             // Assert
             Assert.Equal(200, response.StatusCode);
             Assert.NotNull(value);
-            Assert.Equal("Inserimento articolo NANANAN eseguita con successo!", value.Message);
+            Assert.Equal("Inserimento articolo 123456A eseguita con successo!", value.Message);
         }
 
         [Fact]
-        public void TestPostArticoloKO()
+        public void BTestPostArticoloKO()
         {
             // Arrange
             var dbContext = DbContextMocker.nanshopDbContext();
-            var controller = new ArticoliController(new ArticoliStore(dbContext));
+            var controller = new ArticoliController(new ArticoliStore(dbContext), MapperMocker.GetMapper());
 
             // Act
             var response = controller.PostArticolo(this.CreateArtTest()) as ObjectResult;
@@ -67,15 +69,15 @@ namespace ArticoliWebService.test
             // Assert
             Assert.Equal(422, response.StatusCode);
             Assert.NotNull(value);
-            Assert.Equal("Articolo NANANAN presente in anagrafica! Impossibile utilizzare il metodo POST!", value.Message);
+            Assert.Equal("Articolo 123456A presente in anagrafica! Impossibile utilizzare il metodo POST!", value.Message);
         }
 
         [Fact]
-        public async Task TestPutArticoloAsync()
+        public async Task CTestPutArticoloAsync()
         {
             // Arrange
             var dbContext = DbContextMocker.nanshopDbContext();
-            var controller = new ArticoliController(new ArticoliStore(dbContext));
+            var controller = new ArticoliController(new ArticoliStore(dbContext),MapperMocker.GetMapper());
 
             Articoli articolo = this.CreateArtTest();
             articolo.Descrizione = "Articolo Test Inserimento Modificato";
@@ -89,18 +91,18 @@ namespace ArticoliWebService.test
              // Assert
             Assert.Equal(200, response.StatusCode);
             Assert.NotNull(value);
-            Assert.Equal("Modifica articolo NANANAN eseguita con successo!", value.Message);
+            Assert.Equal("Modifica articolo 123456A eseguita con successo!", value.Message);
         }
 
         [Fact]
-        public void TestDeleteArticolo()
+        public void DTestDeleteArticolo()
         {
             // Arrange
             var dbContext = DbContextMocker.nanshopDbContext();
-            var controller = new ArticoliController(new ArticoliStore(dbContext));
+            var controller = new ArticoliController(new ArticoliStore(dbContext), MapperMocker.GetMapper());
 
             // Act
-            var response = controller.DeleteArticolo("321ProvaIns") as ObjectResult;
+            var response = controller.DeleteArticolo("123456A") as ObjectResult;
             var value = response.Value as InfoMsg;
 
             dbContext.Dispose();
@@ -108,7 +110,7 @@ namespace ArticoliWebService.test
              // Assert
             Assert.Equal(200, response.StatusCode);
             Assert.NotNull(value);
-            Assert.Equal("Eliminazione articolo NANANAN eseguita con successo!", value.Message);
+            Assert.Equal("Eliminazione articolo 123456A eseguita con successo!", value.Message);
 
         }
     }

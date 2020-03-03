@@ -9,6 +9,8 @@ namespace ArticoliWebService.Services.Stores
     {
         Task<ICollection<Articoli>> GetArticoliByDescr(string descrizione);
 
+        Task<ICollection<Articoli>> GetArticoliByDescr(string descrizione, string idCat);
+
         Task<Articoli> GetArticoloByCodice(string codice);
 
         Articoli GetArticoloByCodice2(string codice);

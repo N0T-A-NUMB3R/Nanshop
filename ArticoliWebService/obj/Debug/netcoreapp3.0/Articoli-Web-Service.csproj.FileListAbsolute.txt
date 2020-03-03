@@ -34,3 +34,5 @@ C:\Progetti\nanshop\ArticoliWebService\obj\Debug\netcoreapp3.0\Articoli-Web-Serv
 C:\Progetti\nanshop\ArticoliWebService\obj\Debug\netcoreapp3.0\Articoli-Web-Service.csproj.CopyComplete
 C:\Progetti\nanshop\ArticoliWebService\obj\Debug\netcoreapp3.0\Articoli-Web-Service.dll
 C:\Progetti\nanshop\ArticoliWebService\obj\Debug\netcoreapp3.0\Articoli-Web-Service.pdb
+C:\Progetti\nanshop\ArticoliWebService\bin\Debug\netcoreapp3.0\AutoMapper.dll
+C:\Progetti\nanshop\ArticoliWebService\bin\Debug\netcoreapp3.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll

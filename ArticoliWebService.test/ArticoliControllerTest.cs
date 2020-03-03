@@ -6,6 +6,7 @@ using ArticoliWebService.Dtos;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
+using ArticoliWebService.Test;
 
 namespace ArticoliWebService.test
 {
@@ -18,7 +19,7 @@ namespace ArticoliWebService.test
 
             //arrange
             var dbContext = DbContextMocker.nanshopDbContext();
-            var controller = new ArticoliController(new ArticoliStore(dbContext));
+            var controller = new ArticoliController(new ArticoliStore(dbContext), MapperMocker.GetMapper());
 
             // Act
             var response = await controller.GetArticoloByCodice(codArt) as ObjectResult;
@@ -39,7 +40,7 @@ namespace ArticoliWebService.test
 
             // Arrange
             var dbContext = DbContextMocker.nanshopDbContext();
-            var controller = new ArticoliController(new ArticoliStore(dbContext));
+            var controller = new ArticoliController(new ArticoliStore(dbContext), MapperMocker.GetMapper());
 
             // Act
             var response = await controller.GetArticoloByCodice(CodArt) as ObjectResult;
@@ -55,21 +56,24 @@ namespace ArticoliWebService.test
 
         [Fact]
         public async Task TestSelArticoliByDescrizione()
-        {
+        { // System.NullReferenceException : Object reference not set to an instance of an object.
             string Descrizione = "ACQUA ROCCHETTA";
 
             // Arrange
             var dbContext = DbContextMocker.nanshopDbContext();
-            var controller = new ArticoliController(new ArticoliStore(dbContext));
+            var controller = new ArticoliController(new ArticoliStore(dbContext), MapperMocker.GetMapper());
 
             // Act
-            var response = await controller.GetArticoliByDesc(Descrizione) as ObjectResult;
-            var value = response.Value as ICollection<ArticoliDTO>;
-
+            var actionResult = await controller.GetArticoliByDesc(Descrizione,"");
             dbContext.Dispose();
+            
+            var result = actionResult.Result as ObjectResult;
+            var value = result.Value as ICollection<ArticoliDTO>;
+
+           
 
             // Assert
-            Assert.Equal(200, response.StatusCode);
+            Assert.Equal(200, result.StatusCode);
             Assert.NotNull(value);
             Assert.Equal(3, value.Count);
             Assert.Equal("002001201", value.FirstOrDefault().CodArt);
@@ -82,28 +86,29 @@ namespace ArticoliWebService.test
 
             // Arrange
             var dbContext = DbContextMocker.nanshopDbContext();
-            var controller = new ArticoliController(new ArticoliStore(dbContext));
+            var controller = new ArticoliController(new ArticoliStore(dbContext), MapperMocker.GetMapper());
 
             // Act
-            var response = await controller.GetArticoliByDesc(Descrizione) as ObjectResult;
-            var value = response.Value as ICollection<ArticoliDTO>;
-
+            var actionResult = await controller.GetArticoliByDesc(Descrizione, "");
             dbContext.Dispose();
 
-            Assert.Equal(404, response.StatusCode);
+            var result = actionResult.Result as ObjectResult;
+            var value = result.Value as ICollection<ArticoliDTO>;
+
+            Assert.Equal(404, result.StatusCode);
             Assert.Null(value);
-            Assert.Equal("Non è stato trovato alcun articolo con il filtro 'Pippo'", response.Value);
+            Assert.Equal("Non è stato trovato alcun articolo con il filtro 'Pippo'", result.Value);
 
         }
 
         [Fact]
         public async Task TestSelArticoloByEan()
-        {
+        { // System.InvalidCastException : Unable to cast object of type 'System.Int16' to type 'System.Int32'.
             string Ean = "80582533";
 
             // Arrange
             var dbContext = DbContextMocker.nanshopDbContext();
-            var controller = new ArticoliController(new ArticoliStore(dbContext));
+            var controller = new ArticoliController(new ArticoliStore(dbContext), MapperMocker.GetMapper());
 
             // Act
             var response = await controller.GetArticoloByEan(Ean) as ObjectResult;
@@ -125,7 +130,7 @@ namespace ArticoliWebService.test
 
             // Arrange
             var dbContext =DbContextMocker.nanshopDbContext();
-            var controller = new ArticoliController(new ArticoliStore(dbContext));
+            var controller = new ArticoliController(new ArticoliStore(dbContext), MapperMocker.GetMapper());
 
             // Act
             var response = await controller.GetArticoloByEan(Ean) as ObjectResult;

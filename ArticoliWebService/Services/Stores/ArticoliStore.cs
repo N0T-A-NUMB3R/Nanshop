@@ -35,6 +35,22 @@ namespace ArticoliWebService.Services.Stores
             .ToListAsync();
         }
 
+        public async Task<ICollection<Articoli>> GetArticoliByDescr(string descrizione, string idCat)
+        {
+            var isNumeric = int.TryParse (idCat, out int n);
+
+            if(string.IsNullOrWhiteSpace(idCat) || !isNumeric)
+            {
+                return await this.GetArticoliByDescr(descrizione);
+            }
+            return await this.nanshopDbContext.Articoli
+            .Where(art => art.Descrizione.Contains(descrizione))
+            .Where(a => a.IdFamAss == int.Parse(idCat))
+            .Include(a => a.FamAssort)
+            .OrderBy(art => art.Descrizione)
+            .ToListAsync();
+        }
+
         public async Task<Articoli> GetArticoloByCodice(string codice)
         {
             return await this.nanshopDbContext.Articoli
@@ -83,5 +99,6 @@ namespace ArticoliWebService.Services.Stores
             this.nanshopDbContext.Articoli.Update(articolo);
             return Salva().Item1;
         }
+
     }
 }
