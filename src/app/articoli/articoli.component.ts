@@ -3,6 +3,13 @@ import {ActivatedRoute} from '@angular/router';
 import { ArticoliDataService } from '../services/data/articoli-data.service';
 import { from } from 'rxjs';
 
+export class ApiMsg{
+  constructor (
+    public code: string,
+    public message : string
+  ){}
+}
+
 export class Articoli{
   
   constructor(
@@ -32,6 +39,9 @@ export class ArticoliComponent implements OnInit {
   articoli : Articoli [];
   articolo : Articoli;
 
+  apiMsg : ApiMsg;
+  messaggio : string;
+
   constructor(private articoliService : ArticoliDataService, private route : ActivatedRoute) { }
 
   ngOnInit() {
@@ -47,7 +57,7 @@ export class ArticoliComponent implements OnInit {
     this.getArticoli(this.filter);
   }
   
-  public getArticoli(filter: string) {
+  public getArticoli(filter : string) {
 
     this.articoliService.getArticoloByCodice(filter).subscribe(
       response => {
@@ -103,5 +113,15 @@ export class ArticoliComponent implements OnInit {
       }
     )
   }
-
+  public eliminaArticolo (codart : string)
+  {
+    console.log(`Eliminazione articolo ${codart}`);
+    this.articoliService.deleteArticolo(codart).subscribe(
+      response => {
+        this.apiMsg = response;
+        this.messaggio = this.apiMsg.message;
+        this.refresh();
+      }    
+    )
+  }
 }

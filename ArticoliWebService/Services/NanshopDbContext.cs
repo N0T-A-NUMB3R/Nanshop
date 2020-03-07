@@ -21,7 +21,8 @@ namespace ArticoliWebService.Services
             modelBuilder.Entity<Ean>()
                 .HasOne<Articoli>(s => s.Articolo) //ad un articolo...
                 .WithMany(g => g.Barcode) //corrispondono molti barcode
-                .HasForeignKey(s => s.CodArt); //la chiave esterna dell'entity barcode
+                .HasForeignKey(s => s.CodArt);
+                //la chiave esterna dell'entity barcode
 
             //Relazione one to one (uno a uno) fra articoli e ingredienti
             modelBuilder.Entity<Articoli>()

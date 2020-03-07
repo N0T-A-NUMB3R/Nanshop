@@ -36,6 +36,7 @@
                 </div>
             </div>
         </div>
+        <div class="alert alert-success" *ngIf='messaggio'>{{messaggio}}</div>
         <table id="articoli" class="table table-striped table-bordered table-hover">
             <thead>
                 <tr>
@@ -66,7 +67,7 @@
                         <span class="oi oi-pencil"></span> Modifica</button>
                     </td>
                     <td>
-                        <button (click)="Elimina(articolo.codArt)" class="btn btn-danger table-buttons">
+                        <button (click)="eliminaArticolo(articolo.codArt)" class="btn btn-danger table-buttons">
                         <span class="oi oi-trash"></span> Elimina</button>
                     </td>
                 </tr>

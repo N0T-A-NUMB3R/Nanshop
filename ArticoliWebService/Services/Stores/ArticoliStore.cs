@@ -69,6 +69,7 @@ namespace ArticoliWebService.Services.Stores
             .Where(art => art.CodArt.Equals(codice))
             .FirstOrDefault();
         }
+
         public async Task<Articoli> GetArticoloByEan(string ean)
         {
             var param = new SqlParameter("@Barcode", ean);
