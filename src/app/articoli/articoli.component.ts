@@ -121,6 +121,10 @@ export class ArticoliComponent implements OnInit {
         this.apiMsg = response;
         this.messaggio = this.apiMsg.message;
         this.refresh();
+      },
+      error => {
+        this.apiMsg = error;
+        this.refresh();
       }    
     )
   }

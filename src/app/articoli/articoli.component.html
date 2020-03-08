@@ -63,7 +63,7 @@
                     <td>{{articolo.idStatoArt}}</td>
                     <td>{{articolo.dataCreazione | date:'shortDate'}}</td>
                     <td>
-                        <button class="btn btn-warning table-buttons">
+                        <button  (click)="modificaArticolo(articolo.codArt)"class="btn btn-warning table-buttons">
                         <span class="oi oi-pencil"></span> Modifica</button>
                     </td>
                     <td>
