@@ -26,6 +26,10 @@ namespace ArticoliWebService.Services.Stores
         Tuple<bool, int> Salva();
 
         Task<bool> ArticoloExists(string code);
+
+        Task<ICollection<Iva>> SelIva();
+
+        Task<ICollection<FamAssort>> SelCat();
         
     } 
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import { ArticoliDataService } from '../services/data/articoli-data.service';
 import { from } from 'rxjs';
 
@@ -42,7 +42,7 @@ export class ArticoliComponent implements OnInit {
   apiMsg : ApiMsg;
   messaggio : string;
 
-  constructor(private articoliService : ArticoliDataService, private route : ActivatedRoute) { }
+  constructor(private articoliService : ArticoliDataService, private route : ActivatedRoute, private router : Router) { }
 
   ngOnInit() {
   
@@ -113,8 +113,7 @@ export class ArticoliComponent implements OnInit {
       }
     )
   }
-  public eliminaArticolo (codart : string)
-  {
+  public eliminaArticolo (codart : string){
     console.log(`Eliminazione articolo ${codart}`);
     this.articoliService.deleteArticolo(codart).subscribe(
       response => {
@@ -128,4 +127,12 @@ export class ArticoliComponent implements OnInit {
       }    
     )
   }
+
+  public modificaArticolo(codart: string){
+    console.log(`Modifica articolo ${codart}`);
+    this.router.navigate(['newart/:codart']);
+  }
+
+
+
 }

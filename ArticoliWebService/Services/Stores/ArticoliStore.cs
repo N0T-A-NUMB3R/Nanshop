@@ -102,5 +102,18 @@ namespace ArticoliWebService.Services.Stores
             return Salva().Item1;
         }
 
+        public async Task<ICollection<Iva>> SelIva()
+        {
+           return await this.nanshopDbContext.Iva
+            .OrderBy(i => i.Aliquota)
+            .ToListAsync();
+        }
+
+        public async Task<ICollection<FamAssort>> SelCat()
+        {
+            return await this.nanshopDbContext.Famassort
+            .OrderBy(f => f.id)
+            .ToListAsync();
+        }
     }
 }
