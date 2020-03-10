@@ -10,6 +10,20 @@ export class ApiMsg{
   ){}
 }
 
+export class Iva {
+  constructor(
+    public idIva : number,
+    public descrizione : string
+  ){}
+}
+
+export class FamAssort {
+  constructor(
+    public idI: number,
+    public descrizione: string
+  ) { }
+}
+
 export class Articoli{
   
   constructor(
@@ -20,8 +34,9 @@ export class Articoli{
     public peso: number,
     public prezzo: number,
     public isActive: boolean,
-    public data : Date
-
+    public data : Date,
+    public idIva : number,
+    public idFamAss : number
   ){}
 }
 
@@ -130,9 +145,7 @@ export class ArticoliComponent implements OnInit {
 
   public modificaArticolo(codart: string){
     console.log(`Modifica articolo ${codart}`);
-    this.router.navigate(['newart/:codart']);
+    this.router.navigate(['newart', codart]);
   }
-
-
 
 }
